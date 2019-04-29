@@ -31,8 +31,17 @@ public class MyHeap{
   push the element at index i up into the correct position. This will swap it with the parent node until the parent node is larger or the root is reached. [ should be O(logn) ]
   precondition: index is between 0 and data.length-1 inclusive.
   */
-  private static void pushUp(int[]data,int index){}
-
+  private static void pushUp(int[]data,int index){
+  // basically the reverse of pushdown --locate the parent!
+  if (index == 0 || data[(index-1)/2] > data[index]) return;
+  //when you are at the root of the tree you kinda have to stop.
+  //also you cannot push up since this is a max heap --> if the parent is already greater than it's children, then it is already in the right place!
+  else {
+    swapN(data, index, (index-1)/2);
+    pushUp(data, (index-1)/2);
+  }
+  //otherwise the parent IS in the wrong place and needs to be swapped with it's child. Continue evaluating from there!
+  }
   /*
   convert the array into a valid heap. [ should be O(n) ]
   */
