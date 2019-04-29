@@ -22,9 +22,9 @@ public class MyHeap{
       //simplest case would be when child of index is a leaf and yet is greater than index.
       }
     }
-    //okay if index has two available kids (whom aren't leaves), yet is DEFINITELY less than both of it's children , THEN check for which is the greatest child to pushdown to!
+    //okay if index has two available kids (whom aren't leaves), yet is DEFINITELY less than one of it's children , THEN check for which is the greatest child to pushdown to!
     else if (2*index+2 < size && (data[index] < data[2*index+1]
-                              &&  data[index] < data[2*index+2])) {
+                              ||  data[index] < data[2*index+2])) {
          //left child is greater than both index parent and right sibling
          if (data[2*index + 1] > data[2*index+2]) {
            swapN(data, index, 2*index +1);
