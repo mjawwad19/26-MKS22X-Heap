@@ -1,12 +1,31 @@
 import java.util.*;
 public class MyHeap{
+  /*swaps two nodes!*/
+  private static void swapN(int[] d, int i1, int i2) {
+    int tStore = d[i2];
+    d[i2] = d[i1];
+    d[i1] = tStore;
+  }
   /*
   size  is the number of elements in the data array.
   push the element at index i downward into the correct position. This will swap with the larger of the child nodes provided thatchild is larger. This stops when a leaf is reached, or neither child is larger. [ should be O(logn) ]
   precondition: index is between 0 and size-1 inclusive
   precondition: size is between 0 and data.length-1 inclusive.
   */
-  private static void pushDown(int[]data,int size,int index){}
+  private static void pushDown(int[]data,int size,int index){
+    if (2* index + 1 >= size || data[index] > data[2*index+1] && data[index] > data[2*index+2]) return;
+    //above is when there is no more children (implied no right child either) or when the data[index] is at the right place (it is greater than it's children!) At this point, push can stop since the element is at the right place!
+    else if (data[2*index+1] > data[2*index+2]) {
+      swapN(data, index, 2*index+1);
+      pushDown(data,size,2*index+1);
+    }
+    //if the left child is greater than the right child, and at least one of the children is greater than the data @ index (hence the else), swap to place, then continue evaluating this child's children to see if you can keep pushing down.
+    else {
+      swapN(data, index, 2*index+2);
+      pushDown(data,size,2*index+2);
+    }
+    //this means the right child is greater than both it's left sibling and it's parent (aka index). Swap and continue evaluating, if you can
+  }
 
   /*
   push the element at index i up into the correct position. This will swap it with the parent node until the parent node is larger or the root is reached. [ should be O(logn) ]
