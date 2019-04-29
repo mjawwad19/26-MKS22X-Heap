@@ -2,7 +2,7 @@ import java.util.*;
 public class MyHeap{
   /*swaps two nodes!*/
   private static void swapN(int[] d, int i1, int i2) {
-    System.out.println("Swapping " + d[i2] + " with " + d[i1]);
+    //System.out.println("Swapping " + d[i2] + " with " + d[i1]);
     int tStore = d[i2];
     d[i2] = d[i1];
     d[i1] = tStore;
@@ -50,10 +50,10 @@ public class MyHeap{
   */
   public static void heapify(int[] d){
     for (int i = d.length -1; i >= 0; i--) {
-      System.out.println("currently at index: " + i);
+      //System.out.println("currently at index: " + i);
       pushDown(d,d.length, i);
       //basically push the element to the right place, then change index.
-      System.out.println(Arrays.toString(d));
+      //ystem.out.println(Arrays.toString(d));
     }
   }
 
@@ -62,11 +62,19 @@ public class MyHeap{
   converting it into a heap
   removing the largest value n-1 times (remove places at end of the sub-array).
   */
-  public static void heapsort(int[] d){}
+  public static void heapsort(int[] d){
+    heapify(d);
+    for (int i = d.length-1; i > 0; i--) {
+      swapN(d, 0, i);
+      pushDown(d, i-1, 0);
+    }
+  }
 
   public static void main(String[] args) {
     int[] a = {12,33,5,2,7,52,16};
     heapify(a);
+    System.out.println(Arrays.toString(a));
+    heapsort(a);
     System.out.println(Arrays.toString(a));
   }
 }
