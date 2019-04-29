@@ -2,10 +2,12 @@ import java.util.*;
 public class MyHeap{
   /*swaps two nodes!*/
   private static void swapN(int[] d, int i1, int i2) {
+    System.out.println("Swapping " + d[i2] + " with " + d[i1]);
     int tStore = d[i2];
     d[i2] = d[i1];
     d[i1] = tStore;
   }
+
   /*
   size  is the number of elements in the data array.
   push the element at index i downward into the correct position. This will swap with the larger of the child nodes provided thatchild is larger. This stops when a leaf is reached, or neither child is larger. [ should be O(logn) ]
@@ -32,20 +34,28 @@ public class MyHeap{
   precondition: index is between 0 and data.length-1 inclusive.
   */
   private static void pushUp(int[]data,int index){
-  // basically the reverse of pushdown --locate the parent!
-  if (index == 0 || data[(index-1)/2] > data[index]) return;
-  //when you are at the root of the tree you kinda have to stop.
-  //also you cannot push up since this is a max heap --> if the parent is already greater than it's children, then it is already in the right place!
-  else {
-    swapN(data, index, (index-1)/2);
-    pushUp(data, (index-1)/2);
+    // basically the reverse of pushdown --locate the parent!
+    if (index == 0 || data[(index-1)/2] > data[index]) return;
+    //when you are at the root of the tree you kinda have to stop.
+    //also you cannot push up since this is a max heap --> if the parent is already greater than it's children, then it is already in the right place!
+    else {
+      swapN(data, index, (index-1)/2);
+      pushUp(data, (index-1)/2);
+    }
+    //otherwise the parent IS in the wrong place and needs to be swapped with it's child. Continue evaluating from there!
   }
-  //otherwise the parent IS in the wrong place and needs to be swapped with it's child. Continue evaluating from there!
-  }
+
   /*
   convert the array into a valid heap. [ should be O(n) ]
   */
-  public static void heapify(int[] d){}
+  public static void heapify(int[] d){
+    for (int i = d.length -1; i >= 0; i--) {
+      System.out.println("currently at index: " + i);
+      pushDown(d,d.length, i);
+      //basically push the element to the right place, then change index.
+      System.out.println(Arrays.toString(d));
+    }
+  }
 
   /*
   sort the array [ should be O(nlogn) ] :
@@ -53,4 +63,10 @@ public class MyHeap{
   removing the largest value n-1 times (remove places at end of the sub-array).
   */
   public static void heapsort(int[] d){}
+
+  public static void main(String[] args) {
+    int[] a = {12,33,5,2,7,52,16};
+    heapify(a);
+    System.out.println(Arrays.toString(a));
+  }
 }
