@@ -15,18 +15,44 @@ public class MyHeap{
   precondition: size is between 0 and data.length-1 inclusive.
   */
   private static void pushDown(int[]data,int size,int index){
-    if (2* index + 1 >= size || data[index] > data[2*index+1] && data[index] > data[2*index+2]) return;
-    //above is when there is no more children (implied no right child either) or when the data[index] is at the right place (it is greater than it's children!) At this point, push can stop since the element is at the right place!
-    else if (data[2*index+1] > data[2*index+2]) {
-      swapN(data, index, 2*index+1);
-      pushDown(data,size,2*index+1);
+    if (size % 2 == 0) {
+      if ((2*index+1 == size-1 && data[index] >= data[2*index+1]) ||
+         (2*index+1 >= size || data[index] >= data[2*index+1] && data[index] >= data[2*index+2])) {
+           return;
+         }
+      //above is same as before --> checking if children are even possible/not possible and that index acts in it's correct role as max to it's children!
+
+      //if child is remaining leaf and index is not the maximum of it's children
+      else if (2*index+1 == size-1) {
+        swapN(data, index, 2*index+1);
+        pushDown(data, size, 2*index+2);
+      }
+      //right child is greater than left and parent (index)
+      else if (data[2*index+1] < data[2*index+2]) {
+        swapN(data, index, 2*index+2);
+        pushDown(data, size, 2*index + 2);
+      }
+      //left child is greater than right and parent(index)
+      else {
+        swapN(data, index, 2*index+1);
+        pushDown(data, size, 2*index+1);
+      }
     }
-    //if the left child is greater than the right child, and at least one of the children is greater than the data @ index (hence the else), swap to place, then continue evaluating this child's children to see if you can keep pushing down.
-    else {
-      swapN(data, index, 2*index+2);
-      pushDown(data,size,2*index+2);
+
+    else if (size % 2 == 1) {
+      if (2*index+2 >= size || data[index] >= data[2*index+1] &&
+                               data[index] >= data[2*index+2]) {
+                                 return;
+                               }
+      else if (data[2*index+1] < data[2*index+2]) {
+        swapN(data, index, 2*index+2);
+        pushDown(data, size, 2*index+2);
+      }
+      else {
+        swapN(data, index, 2*index +1);
+        pushDown(data, size, 2*index+1);
+      }
     }
-    //this means the right child is greater than both it's left sibling and it's parent (aka index). Swap and continue evaluating, if you can
   }
 
   /*
