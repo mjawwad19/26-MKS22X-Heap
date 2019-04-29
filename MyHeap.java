@@ -15,45 +15,28 @@ public class MyHeap{
   precondition: size is between 0 and data.length-1 inclusive.
   */
   private static void pushDown(int[]data,int size,int index){
-    if (size % 2 == 0) {
-      if ((2*index+1 == size-1 && data[index] >= data[2*index+1]) ||
-         (2*index+1 >= size || data[index] >= data[2*index+1] && data[index] >= data[2*index+2])) {
-           return;
-         }
-      //above is same as before --> checking if children are even possible/not possible and that index acts in it's correct role as max to it's children!
-
-      //if child is remaining leaf and index is not the maximum of it's children
-      else if (2*index+1 == size-1) {
-        swapN(data, index, 2*index+1);
-        pushDown(data, size, 2*index+2);
-      }
-      //right child is greater than left and parent (index)
-      else if (data[2*index+1] < data[2*index+2]) {
-        swapN(data, index, 2*index+2);
-        pushDown(data, size, 2*index + 2);
-      }
-      //left child is greater than right and parent(index)
-      else {
-        swapN(data, index, 2*index+1);
-        pushDown(data, size, 2*index+1);
-      }
-    }
-
-    else if (size % 2 == 1) {
-      if (2*index+2 >= size || data[index] >= data[2*index+1] &&
-                               data[index] >= data[2*index+2]) {
-                                 return;
-                               }
-      else if (data[2*index+1] < data[2*index+2]) {
-        swapN(data, index, 2*index+2);
-        pushDown(data, size, 2*index+2);
-      }
-      else {
+    if (size % 2 == 0 && 2*index+1 == size -1) {
+      if (data[index] < data[2*index+1]) {
         swapN(data, index, 2*index +1);
-        pushDown(data, size, 2*index+1);
+        return;
+      //simplest case would be when child of index is a leaf and yet is greater than index.
       }
     }
-  }
+    //okay if index has two available kids (whom aren't leaves), yet is DEFINITELY less than both of it's children , THEN check for which is the greatest child to pushdown to!
+    else if (2*index+2 < size && (data[index] < data[2*index+1]
+                              &&  data[index] < data[2*index+2])) {
+         //left child is greater than both index parent and right sibling
+         if (data[2*index + 1] > data[2*index+2]) {
+           swapN(data, index, 2*index +1);
+           pushDown(data, size, 2*index +1);
+         }
+         else {
+           //right child is greather than both index parent and left sibling
+           swapN(data, index, 2*index + 2);
+           pushDown(data, size, 2*index +2);
+         }
+       }
+     }
 
   /*
   push the element at index i up into the correct position. This will swap it with the parent node until the parent node is larger or the root is reached. [ should be O(logn) ]
@@ -92,7 +75,7 @@ public class MyHeap{
     heapify(d);
     for (int i = d.length-1; i > 0; i--) {
       swapN(d, 0, i);
-      pushDown(d, i-1, 0);
+      pushDown(d, i, 0);
     }
   }
 
